@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+  namespace: odoo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - image: docker.io/bitnami/postgresql:16
+        imagePullPolicy: Always
+        name: postgres
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        - name: POSTGRESQL_USERNAME
+          value: "odoo"
+        - name: POSTGRESQL_PASSWORD
+          value: "odoo"
+        - name: POSTGRESQL_DATABASE
+          value: "odoo_db"
+
+

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo
+  labels:
+    app: odoo
+  namespace: odoo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoo
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: odoo
+    spec:
+      containers:
+      - image: docker.io/bitnami/odoo:17
+        imagePullPolicy: Always
+        name: odoo
+        ports:
+        - containerPort: 8069
+          protocol: TCP
+        env:
+        - name: ODOO_DATABASE_HOST
+          value: "postgres"
+        - name: ODOO_DATABASE_PORT_NUMBER
+          value: "5432"
+        - name: ODOO_DATABASE_ADMIN_USER
+          value: "odoo"
+        - name: ODOO_DATABASE_ADMIN_PASSWORD
+          value: "odoo"
+        - name: ODOO_DATABASE_NAME
+          value: "odoo_db"
+        - name: ODOO_DATABASE_USER
+          value: "odoo"
+        - name: ODOO_DATABASE_PASSWORD
+          value: "odoo"
