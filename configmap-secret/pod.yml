@@ -1,0 +1,16 @@
+spec:
+  containers:
+    - name: ctr1
+      image: busybox
+      command: [ "/bin/sh", "-c", "watch -n 10 echo MERCHANT_ID: $(MERCHANT_ID) PAYMENT_GATEWAY_API_KEY: $(PAYMENT_GATEWAY_API_KEY) " ]
+      env:
+        - name: MERCHANT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: multimap
+              key: MERCHANT_ID
+        - name: PAYMENT_GATEWAY_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: PAYMENT_GATEWAY_API_KEY

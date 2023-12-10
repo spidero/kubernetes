@@ -1,0 +1,6 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: multimap
+data:
+  MERCHANT_ID: merczand_id
